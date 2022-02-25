@@ -1,0 +1,28 @@
+def main(): 
+let	K_nota, BIB_nota, PK_nota, AA_nota, AD_nota: integer
+	kount: integer
+	mikel_nota: float; float in {
+	
+  #Ez dakit zihur funtzionatuko duen
+  	
+  read(K_nota);
+  kount= kount +1;
+  
+  read(BIB_nota);
+  kount= kount +1;
+  
+  read(PK_nota);
+  kount= kount +1;
+  
+  read(AA_nota);
+  kount= kount +1;
+  
+  read(AD_nota);
+  kount= kount +1;
+  
+  mikel_nota = (K_nota + BIB_nota + AA_nota + AD_nota + PK_nota)/kount;
+  
+  print(mikel_nota integer);
+  
+} # def main -let amaiera
+
