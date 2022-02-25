@@ -8,7 +8,6 @@
    extern int yylex();
    extern int yylineno;
    extern char *yytext;
-   extern string tab ;
    void yyerror (const char *msg) {
      printf("line %d: %s at '%s'\n", yylineno, msg, yytext) ;
      yyerrornum++;
@@ -18,24 +17,23 @@
 
 /* 
    Ikurrek zein atributu-mota duten 
-*/
+
 %union {
     string *izena ; 
 }
-
-/* 
-   Tokenak eta bere atributuak erazagutu. Honek tokens.l fitxategiarekin 
-   bat etorri behar du.
-   Lexikoak atributua duten tokenetarako memoria alokatzen du,
-   hemen askatu behar da.
 */
 
+/* 
+   Tokenak erazagutu. Honek tokens.l fitxategiarekin 
+   bat etorri behar du.
+*/
 
-%token <izena> TID TINTEGER TFLOAT
-%token TLBRACE TRBRACE  TSEMIC TMUL TASSIG RPROG TSUM TRES TDIV TBIG TBIGQ TLOW TLOWQ TEQL TNEQL
-
-/* Hemen erazagutu atributuak dauzkaten ez-bukaerakoak */
-%type <izena> sententzia_zerrenda sententzia adierazpena bloke
+%token RDEF RMAIN RLET RIN TMUL TASSIG TSEMIC TLBRACE
+%token TRBRACE TID TFLOAT TINTEGER TLPAREN TRPAREN TCOLON
+%token TCOMMA TAPOSTROPHE TLOWER THIGHER TAMPERSAND TSUM
+%token TREST THASH TSLASH TCGE TCLE TCEQ TLAK TLBK RIF
+%token RFOREVER RWHILE RELSE RCONTINUE RBREAK RINT RFLOAT
+%token RPROG RPRINT RREAD
 
 %start programa
 
@@ -44,114 +42,89 @@
 %left TMUL TDIV
 
 
-
-
-
 %%
-programa : RPROG TID bloke TSEMIC
-         { 
-          cout << "\n<programa>\n prog " + *$2 + " " + *$3  + "\n</programa>\n" << endl;
-	  delete $2; delete $3; 
-         }
+
+programa : RDEF RMAIN TLPAREN TRPAREN TCOLON bloke_nag
          ;
 
-
-bloke : TLBRACE
-        sententzia_zerrenda
-        TRBRACE
-      { 
-       $$ = $2; 
-      }
-      ;
-
-
-sententzia_zerrenda : /* hutsa */
-                { 
-	          $$ = new string; *$$ = "\n<sententzia_zerrenda1>\n</sententzia_zerrenda1>\n";
-	        }
-              | sententzia_zerrenda sententzia TSEMIC 
-                {
-                  $$ = new string; *$$ = "\n<sententzia_zerrenda2>\n" + *$1 + *$2  + "\n</sententzia_zerrenda2>\n";
-	          delete $1; delete $2;
- 	        }
-              ;
-
-sententzia : TID TASSIG adierazpena 
-             {
-	       $$ = new string ; *$$ = "\n<sententzia>\n" + *$1 + "=" + *$3 + "\n</sententzia>\n" ;
-	       delete $1; delete $3;
-	     }
-           ;
-
-adierazpena : adierazpena TMUL adierazpena 
-              {
-	        $$ = new string; *$$ = "\n<adierazpena>\n" + *$1 + " * " + *$3 + "\n</adierazpena>\n" ;
-	        delete $1; delete $3;
-	      }
-            | adierazpena TSUM adierazpena
-              {
-          $$ = new string; *$$ = "\n<adierazpena>\n" + *$1 + " + " + *$3 + "\n</adierazpena>\n" ;
-	        delete $1; delete $3;
-
-        }
-            | adierazpena TRES adierazpena
-              {
-          $$ = new string; *$$ = "\n<adierazpena>\n" + *$1 + " - " + *$3 + "\n</adierazpena>\n" ;
-	        delete $1; delete $3;
-
-        }
-            | adierazpena TDIV adierazpena
-              {
-          $$ = new string; *$$ = "\n<adierazpena>\n" + *$1 + " / " + *$3 + "\n</adierazpena>\n" ;
-	        delete $1; delete $3;
-
-        }
-            | adierazpena TBIG adierazpena
-              {
-          $$ = new string; *$$ = "\n<adierazpena>\n" + *$1 + " > " + *$3 + "\n</adierazpena>\n" ;
-	        delete $1; delete $3;
-
-        }
-            | adierazpena TBIGQ adierazpena
-              {
-          $$ = new string; *$$ = "\n<adierazpena>\n" + *$1 + " >= " + *$3 + "\n</adierazpena>\n" ;
-	        delete $1; delete $3;
-
-        }
-            | adierazpena TLOW adierazpena
-              {
-          $$ = new string; *$$ = "\n<adierazpena>\n" + *$1 + " < " + *$3 + "\n</adierazpena>\n" ;
-	        delete $1; delete $3;
-
-        }
-            | adierazpena TLOWQ adierazpena
-              {
-          $$ = new string; *$$ = "\n<adierazpena>\n" + *$1 + " <= " + *$3 + "\n</adierazpena>\n" ;
-	        delete $1; delete $3;
-
-        }
-            | adierazpena TEQL adierazpena
-              {
-          $$ = new string; *$$ = "\n<adierazpena>\n" + *$1 + " == " + *$3 + "\n</adierazpena>\n" ;
-	        delete $1; delete $3;
-
-        }
-            | adierazpena TNEQL adierazpena
-              {
-          $$ = new string; *$$ = "\n<adierazpena>\n" + *$1 + " /= " + *$3 + "\n</adierazpena>\n" ;
-	        delete $1; delete $3;
-
-        }
-
-            
-            | TID       { $$ = $1; }
-            | TINTEGER  { $$ = $1; }
-            | TFLOAT    { $$ = $1; }
+bloke_nag : bl_eraz TLBRACE 
+            azpiprogramaren_eraz
+            sententzia_zerrenda
+            TRBRACE
             ;
 
+bloke :	bl_eraz TLBRACE
+			  sententzia_zerrenda
+			  TRBRACE
+        ;
 
+bl_eraz : RLET eraz RIN
+			| 
+      ;
 
+eraz : eraz TSEMIC id_zerrenda TCOLON mota
+			| id_zerrenda TCOLON mota
 
+id_zerrenda : TID id_zerrendaren_bestea 
+      ;
 
+id_zerrendaren_bestea : TCOMMA TID id_zerrendaren_bestea 
+			| 
+      ;
 
+mota : RINT 
+      | RFLOAT
 
+azpiprogramen_eraz : azpiprogramaren_eraz azpiprogramen_eraz
+			| 
+      ;
+
+azpiprogramaren_eraz : RDEF TID argumentuak TCOLON bloke_nag
+
+argumentuak :	TLPAREN par_zerrenda TRPAREN
+			| 
+      ;
+
+par_zerrenda : id_zerrenda : par_mota mota par_zerrendaren_bestea
+      ;
+
+par_mota : TAMPERSAND
+      |
+      ;
+
+par_zerrendaren_bestea : TSEMIC id_zerrenda TCOLON par_mota mota par_zerrendaren_bestea 
+			| 
+      ;
+
+sententzia_zerrenda : sententzia sententzia_zerrenda 
+			| TAMPERSAND
+      ;
+
+sententzia	: aldagaia TASSIG adierazpena TSEMIC
+			| RIF adierazpena TCOLON bloke
+			| RFOREVER TCOLON bloke
+			| RWHILE adierazpena TCOLON bloke RELSE TCOLON bloke
+			| RBREAK RIF adierazpena TCOLON
+			| RCONTINUE TSEMIC
+			| RREAD TLPAREN aldagaia TRPAREN TSEMIC
+			| RREAD TLPAREN adierazpena TRPAREN TSEMIC
+      ;
+
+aldagaia : TID 
+
+adierazpena : adierazpena TSUM adierazpena
+			| adierazpena TRES adierazpena
+			| adierazpena TMUL adierazpena
+			| adierazpena TID adierazpena
+			| adierazpena TEQL adierazpena
+			| adierazpena TBIG adierazpena
+			| adierazpena TLOW adierazpena
+			| adierazpena TBIGQ adierazpena
+			| adierazpena TLOWQ adierazpena
+			| adierazpena TNEQL adierazpena
+			| aldagaia
+			| TINTEGER
+			| TFLOAT
+			| TLPAREN adierazpena TRPAREN
+      ;
+%%
