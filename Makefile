@@ -20,5 +20,8 @@ tokens.cpp: tokens.l parser.hpp
 parser: $(SOURCES)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^
 
-proba:  parser probaexpr.in 
-	./parser <probaexpr.in
+proba:  parser ./probak/proba1.in ./probak/proba2.in ./probak/proba3.in ./probak/probatxar1.in
+	./parser <./probak/proba1.in
+	./parser <./probak/proba2.in
+	./parser <./probak/proba3.in
+	./parser <./probak/probatxar1.in

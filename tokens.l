@@ -58,9 +58,6 @@ read                    TOKEN(RREAD);
 [0-9]+                                TOKEN(TINTEGER);
 [ \t\n]                 ;
 
-/* HEMEN EZ DA BEHARREZKOA IDENTIFIKATZEA TOKENIK KOMENTARIOENTZAKO,
-   ANALIZATZAILEAK LEXIKOAK KOMENTARIOAK IRAGAZI EGINGO DITU */
-
 '''([ ^'#]|('[^'#])|(''[^'#]))*'''      ;
 \#([^#]|\n)*                            ;
 
