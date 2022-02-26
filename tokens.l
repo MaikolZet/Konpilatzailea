@@ -48,7 +48,6 @@ read                    TOKEN(RREAD);
 \)                      TOKEN(TRPAREN);
 \:                      TOKEN(TCOLON);
 ,                       TOKEN(TCOMMA);
-'                       TOKEN(TAPOSTROPHE);
 &                       TOKEN(TAMPERSAND);
 #                       TOKEN(THASH);
 
@@ -58,7 +57,8 @@ read                    TOKEN(RREAD);
 [0-9]+                                TOKEN(TINTEGER);
 [ \t\n]                 ;
 
-'''([ ^'#]|('[^'#])|(''[^'#]))*'''      ;
+'''([^'#]|('[^'#])|(''[^'#]))*'''      ;
+
 \#([^#]|\n)*                            ;
 
 .                       {yyerror("Token ezezaguna");}

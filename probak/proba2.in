@@ -1,8 +1,7 @@
 def main(): 
 let	a, b, c: integer;
   	d, e: float in {
-	''' hau iruzkin 
-	    lerroanitza da '''
+	''' hau iruzkin lerroanitza da '''
 	def batu(x: integer; y : integer; emaitza: & integer):
 	let lag, bueltak: integer in {
 		lag = y; emaitza = x;
