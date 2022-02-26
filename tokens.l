@@ -52,14 +52,15 @@ read                    TOKEN(RREAD);
 #                       TOKEN(THASH);
 
 
-[a-zA-Z]([a-zA-Z0-9]*_?[a-zA-Z0-9]+)* TOKEN(TID);
-[0-9]+\.[0-9]+                        TOKEN(TFLOAT);
-[0-9]+                                TOKEN(TINTEGER);
-[ \t\n]                 ;
+[a-zA-Z](_[a-zA-Z0-9]|[a-zA-Z0-9])*                 TOKEN(TID); 
 
-'''([^'#]|('[^'#])|(''[^'#]))*'''      ;
+-?[0-9]+(.[0-9]+)([e|E][-|+]?[1-9][0-9]*)?          TOKEN(TFLOAT);
 
-\#([^#]|\n)*                            ;
+[0-9]+                                              TOKEN(TINTEGER);
+[ \t\n]                                             ;
+
+\'\'\'([^'#]|\'[^'#]|\'\'[^'#])*\'*\'\'\'           ;
+\#[^#\n]*\n                                         ; 
 
 .                       {yyerror("Token ezezaguna");}
 %%
