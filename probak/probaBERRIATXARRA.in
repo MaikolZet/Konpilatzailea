@@ -8,20 +8,6 @@ let	a, b, c: integer;
 		lag_2 = y; emaitza1 = x;
 		if emaitza1 <= 1000: {
 			bueltak = 0;
-			while lag_2 /= 0: {
-				emaitza1 = emaitza1 + 1;
-				break if emaitza1 >= 100000;
-				lag_2 = lag_2 - 1;
-				bueltak = bueltak + 1;
-			}else: {
-				forever : {
-			       	 if emaitza1 < 0 : { continue; }
-				 emaitza1 = emaitza1 - 1 * bueltak / y;
-				}
-				print(bueltak);
-			} # while-else amaiera
-			if emaitza1 == 0: { print(emaitza1); }
-			if emaitza1 > 0: { print(bueltak); }
 		} # if amaiera
 		print(bueltak);
 	} # def batu -let amaiera
