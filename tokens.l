@@ -26,7 +26,6 @@ continue                TOKEN(RCONTINUE) ;
 break                   TOKEN(RBREAK) ;
 integer                 TOKEN(RINT);
 float                   TOKEN(RFLOAT);
-prog                    TOKEN(RPROG);
 print                   TOKEN(RPRINT);
 read                    TOKEN(RREAD);
 
@@ -49,7 +48,6 @@ read                    TOKEN(RREAD);
 \:                      TOKEN(TCOLON);
 ,                       TOKEN(TCOMMA);
 &                       TOKEN(TAMPERSAND);
-#                       TOKEN(THASH);
 
 
 [a-zA-Z](_[a-zA-Z0-9]|[a-zA-Z0-9])*                 TOKEN(TID); 
