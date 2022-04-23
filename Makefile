@@ -1,30 +1,40 @@
 CFLAGS=-Wall
-CPPFLAGS= -std=c++11
+CPPFLAGS=
 CC= g++
-SOURCES=parser.cpp main.cpp tokens.cpp
+SOURCES=parser.cpp main.cpp tokens.cpp Kodea.cpp
 
 all: parser proba
 
 .PHONY: clean
 
 clean:
-	rm parser.cpp parser.hpp parser parser.output tokens.cpp *~
+	rm parser.cpp parser.hpp parser tokens.cpp *~
 
 parser.cpp: parser.y
-	bison -r all -d -o $@ $^
+	bison -d -o $@ $^
+
 parser.hpp: parser.cpp
 
 tokens.cpp: tokens.l parser.hpp
 	flex -o $@ $<
 
-parser: $(SOURCES)
-	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^
+parser: $(SOURCES) Kodea.h Lag.h
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $(SOURCES)
 
-proba:  parser ./probak/proba1.in ./probak/proba2.in ./probak/proba3.in ./probak/probatxar1.in ./probak/probaBERRIA_1_.in ./probak/probaBERRIA_2_.in ./probak/probaBERRIATXARRA.in 
-	./parser <./probak/proba1.in
-	./parser <./probak/proba2.in
-	./parser <./probak/proba3.in
-	./parser <./probak/probatxar1.in
-	./parser <./probak/probaBERRIA_1_.in
-	./parser <./probak/probaBERRIA_2_.in
-	./parser <./probak/probaBERRIATXARRA.in
+proba:  parser probak/proba1.in probak/proba2.in
+	echo "probak/proba1.in"
+	./parser < probak/proba1.in
+	echo "probak/proba2.in"
+	./parser < probak/proba2.in
+	echo "probak/proba3.in"
+	./parser < probak/proba3.in
+	echo "probak/probaBERRIA_1_.in"
+	./parser < probak/probaBERRIA_1_.in"
+	echo "probak/probaBERRIA_2_.in"
+	./parser < probak/probaBERRIA_2_.in"
+	echo "probak/probaBERRIATXARRA.in"
+	./parser < probak/probaBERRIATXARRA.in"
+	echo "probak/probatxar1.in"
+	./parser < probak/probatxar1.in
+
+	
