@@ -1,11 +1,18 @@
+%option yylineno
+
 %{
  #include <string>
  #include <iostream>
  #include <vector>
+ #include <algorithm>
  using namespace std ;
+ #include "Lag.h"
  #include "parser.hpp" 
 
- #define TOKEN(t) return t 
+ /* Hau atributurik ez duten tokenentarako: */
+ #define TOKEN(t) return t
+ 
+ /* Hau izena atributua dutenetarako:       */
  #define TOKENST(t) yylval.izena = new std::string(yytext, yyleng) ; return t 
 
 extern "C" int yywrap() { return(1) ; }

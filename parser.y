@@ -28,9 +28,6 @@
 /* (osoko, erreal, karaktere, erakusle).                                       */
 
 %union {
-    #include "Lag.h"
-
-    
     string *izena ;
     expr_struct *adi ;  /* Bertan izena trueL eta falseL */
     IdLista *idList ;
@@ -110,17 +107,19 @@ id_zerrenda : TID id_zerrendaren_bestea
       ;
 
 id_zerrendaren_bestea : TCOMMA TID id_zerrendaren_bestea 
-                        {$<idList>$ = new IdLista;
+                        {$<idList>$ = $<idList>3;
                         $<idList>$->push_back(*$<izena>2);
-                        $<idList>$->splice($<idList>$->end(),*$<idList>3);}
+                        delete $<izena>2;}
 			|
                         {$<idList>$ = new IdLista;}
       ;
 
 mota : RINT 
-            {$<mota>$ = $<mota>1;}
+            {$<mota>$ = new std::string;
+            *$<mota>$ = "integer";}
       | RFLOAT
-            {$<mota>$ = $<mota>1;}
+            {$<mota>$ = new std::string;
+            *$<mota>$ = "float";}
       ;
 
 azpiprogramen_eraz : azpiprogramaren_eraz azpiprogramen_eraz
@@ -194,8 +193,7 @@ sententzia : aldagaia TASSIG adierazpena TSEMIC
                         {$<cont>$ = new ErrefLista;
                         $<cont>$->push_back(kodea.lortuErref());
                         kodea.agGehitu("goto ");
-                        $<exit>$ = new ErrefLista;
-                        }
+                        $<exit>$ = new ErrefLista;}
 			| RREAD TLPAREN aldagaia TRPAREN TSEMIC
                         {kodea.agGehitu("read " + *$<izena>3);
                         $<cont>$ = new ErrefLista;
