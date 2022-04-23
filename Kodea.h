@@ -60,6 +60,9 @@ public:
 	/* Hurrengo aginduaren zenbakia itzultzen du. */
 	int lortuErref() const;
 
+	/*Erazagupena gehitzeaz gain parametro mota ere definitzen du*/
+	void erazagupenakGehitu2(const std::string &parmota, const std::string &motaIzena, const IdLista &idIzenak);
+
 };
 
 #endif /* KODEA_H_ */
