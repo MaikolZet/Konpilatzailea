@@ -1,4 +1,4 @@
-@authors: Mikel Zubilaga, Iker Sancho.
+@authors: Mikel Zubilaga.
 
-Ohar berezirik ez
+Atributu lexikoak ez dute ongi funtzionatzen, ez dakit zergatik.
 

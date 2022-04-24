@@ -1,5 +1,3 @@
-%option yylineno
-
 %{
  #include <string>
  #include <iostream>

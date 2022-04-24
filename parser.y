@@ -32,7 +32,8 @@
     expr_struct *adi ;  /* Bertan izena trueL eta falseL */
     IdLista *idList ;
     int erref ;
-    ErrefLista *next, *cont, *exit;
+    ErrefLista *next;
+    contexit_struct *ec;
     string *mota;
 }
 
@@ -40,7 +41,7 @@
 /* LEXIKOAK */
 
 %token <izena> TID TINTEGER TFLOAT
-%token <mota> RINT RFLOAT
+
 
 /* ATRIBUTU GABEKOAK */
 
@@ -51,15 +52,16 @@
 %token TRES THASH TDIV TNEQL TEQL 
 %token RFOREVER RWHILE RELSE RCONTINUE RBREAK 
 %token RPROG RPRINT RREAD RIF
+%token RINT RFLOAT
 
 /* SINTETIZATUAK */
 
 %type <erref> M
-%type <list> id_zerrendaren_bestea id_zerrenda
+%type <idList> id_zerrendaren_bestea id_zerrenda
 %type <mota> mota par_mota
 %type <adi> adierazpena
 %type <next> N 
-%type <exit,cont> bloke sententzia sententzia_zerrenda
+%type <ec> bloke sententzia sententzia_zerrenda
 %type <izena> aldagaia
 
 
@@ -88,8 +90,7 @@ bloke_nag : bl_eraz TLBRACE azpiprogramen_eraz sententzia_zerrenda TRBRACE
             ;
 
 bloke : bl_eraz TLBRACE sententzia_zerrenda TRBRACE
-            {$<exit>$ = $<exit>3;
-             $<cont>$ = $<cont>3; }
+            {$<ec>$ = $<ec>3;}
         ;
 
 bl_eraz : RLET eraz RIN
@@ -149,60 +150,54 @@ par_zerrendaren_bestea : TSEMIC id_zerrenda TCOLON par_mota mota {kodea.erazagup
       ;
 
 sententzia_zerrenda : sententzia sententzia_zerrenda 
-                        {$<exit>$ = new ErrefLista;
-                        $<exit>$->splice($<exit>$->end(), *$<exit>1);
-                        $<exit>$->splice($<exit>$->end(), *$<exit>2);
-                        $<cont>$ = new ErrefLista;
-                        $<cont>$->splice($<cont>$->end(), *$<cont>1);
-                        $<cont>$->splice($<cont>$->end(), *$<cont>2);}
+                        {$<ec>$ = new contexit_struct;
+                        $<ec>$->exit.splice($<ec>$->exit.end(), $<ec>1->exit);
+                        $<ec>$->exit.splice($<ec>$->exit.end(), $<ec>2->exit);
+                        $<ec>$->cont.splice($<ec>$->cont.end(), $<ec>1->cont);
+                        $<ec>$->cont.splice($<ec>$->cont.end(), $<ec>2->cont);}
 			| 
-                        {$<exit>$ = new ErrefLista;
-                        $<cont>$ = new ErrefLista;}
+                        {$<ec>$ = new contexit_struct;}
       ;
 
 sententzia : aldagaia TASSIG adierazpena TSEMIC
-                        {$<exit>$ = new ErrefLista;
-                        $<cont>$ = new ErrefLista;}
+                        {$<ec>$ = new contexit_struct;
+                        kodea.agGehitu(*$<izena>1 + " := " + $<adi>3->izena);
+                        delete $<adi>3;
+                        delete $<izena>1;}
 			| RIF adierazpena TCOLON M bloke M
                         {kodea.agOsatu($<adi>2->trueL,$<erref>4);
                         kodea.agOsatu($<adi>2->falseL,$<erref>6);
-                        $<exit>$ = $<exit>5;
-                        $<cont>$ = $<cont>5;}
+                        $<ec>$ = $<ec>5;}
 			|M RFOREVER TCOLON bloke M
                         {kodea.agGehitu("goto " + to_string($<erref>1));
-                        kodea.agOsatu(*$<exit>4,$<erref>5);
-                        $<exit>$ = new ErrefLista;
-                        $<cont>$ = $<cont>4;}
+                        kodea.agOsatu($<ec>4->exit,$<erref>5);
+                        $<ec>$ = new contexit_struct;
+                        $<ec>$->cont = $<ec>4->cont;}
 			| M RWHILE adierazpena TCOLON M bloke N RELSE TCOLON M bloke M
                         {kodea.agOsatu($<adi>2->trueL,$<erref>5);
                         kodea.agOsatu($<adi>2->falseL,$<erref>10);
                         kodea.agOsatu(*$<next>7,$<erref>1);
-                        kodea.agOsatu(*$<exit>6,$<erref>10);
-                        kodea.agOsatu(*$<exit>11,$<erref>12);
-                        $<exit>$ = new ErrefLista;
-                        kodea.agOsatu(*$<cont>6,$<erref>1);
-                        kodea.agOsatu(*$<cont>11,$<erref>1);
-                        $<cont>$ = new ErrefLista;}
+                        kodea.agOsatu($<ec>6->exit,$<erref>10);
+                        kodea.agOsatu($<ec>11->exit,$<erref>12);
+                        $<ec>$ = new contexit_struct;
+                        kodea.agOsatu($<ec>6->cont,$<erref>1);
+                        kodea.agOsatu($<ec>11->cont,$<erref>1);}
 			| RBREAK RIF adierazpena M TSEMIC
                         {kodea.agOsatu($<adi>3->falseL,$<erref>4);
-                        $<exit>$ = new ErrefLista;
-                        *$<exit>$ = $<adi>3->trueL;
-                        $<cont>$ = new ErrefLista;
+                        $<ec>$ = new contexit_struct;
+                        $<ec>$->exit = $<adi>3->trueL;
                         }
 			| RCONTINUE TSEMIC
-                        {$<cont>$ = new ErrefLista;
-                        $<cont>$->push_back(kodea.lortuErref());
-                        kodea.agGehitu("goto ");
-                        $<exit>$ = new ErrefLista;}
+                        {$<ec>$ = new contexit_struct;
+                        $<ec>$->cont.push_back(kodea.lortuErref());
+                        kodea.agGehitu("goto ");}
 			| RREAD TLPAREN aldagaia TRPAREN TSEMIC
                         {kodea.agGehitu("read " + *$<izena>3);
-                        $<cont>$ = new ErrefLista;
-                        $<exit>$ = new ErrefLista;}
+                        $<ec>$ = new contexit_struct;}
 			| RPRINT TLPAREN adierazpena TRPAREN TSEMIC
                         {kodea.agGehitu("write " + *$<izena>3);
                         kodea.agGehitu("writeln");
-                        $<cont>$ = new ErrefLista;
-                        $<exit>$ = new ErrefLista;}
+                        $<ec>$ = new contexit_struct;}
       ;
 
 aldagaia : TID 
@@ -227,7 +222,7 @@ adierazpena : adierazpena TSUM adierazpena
                         kodea.agGehitu($<adi>$->izena + " := " + $<adi>1->izena + " * " + $<adi>3->izena);
                         delete $<adi>1;
                         delete $<adi>2;}
-                  | adierazpena TDIV adierazpena
+                        | adierazpena TDIV adierazpena
                         {$<adi>$ = new expr_struct;
                         $<adi>$->izena = kodea.idBerria();
                         kodea.agGehitu($<adi>$->izena + " := " + $<adi>1->izena + " / " + $<adi>3->izena);
@@ -286,10 +281,12 @@ adierazpena : adierazpena TSUM adierazpena
                         $<adi>$->izena = *$<izena>1;}
 			| TINTEGER
                         {$<adi>$ = new expr_struct;
-                        $<adi>$->izena = *$<izena>1;}
+                        $<adi>$->izena = *$<izena>1;
+                        delete $<izena>1;}
 			| TFLOAT
                         {$<adi>$ = new expr_struct;
-                        $<adi>$->izena = *$<izena>1;}
+                        $<adi>$->izena = *$<izena>1;
+                        delete $<izena>1;}
 			| TLPAREN adierazpena TRPAREN
                         {$<adi>$ = $<adi>2;}
       ;
