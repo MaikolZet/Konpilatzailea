@@ -201,7 +201,8 @@ sententzia : aldagaia TASSIG adierazpena TSEMIC
       ;
 
 aldagaia : TID 
-      {$<izena>$ = $<izena>1;}
+      {$<izena>$ = $<izena>1;
+      delete $<izena>1;}
       ;
 
 adierazpena : adierazpena TSUM adierazpena
