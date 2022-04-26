@@ -55,11 +55,11 @@ read                    TOKEN(RREAD);
 &                       TOKEN(TAMPERSAND);
 
 
-[a-zA-Z](_[a-zA-Z0-9]|[a-zA-Z0-9])*                 TOKEN(TID); 
+[a-zA-Z](_[a-zA-Z0-9]|[a-zA-Z0-9])*                 TOKENST(TID); 
 
-[0-9]+(\.[0-9]+)([e|E][-|+]?[1-9][0-9]*)?          TOKEN(TFLOAT);
+[0-9]+(\.[0-9]+)([e|E][-|+]?[1-9][0-9]*)?          TOKENST(TFLOAT);
 
-[0-9]+                                              TOKEN(TINTEGER);
+[0-9]+                                              TOKENST(TINTEGER);
 [ \t\n]                                             ;
 
 \'\'\'([^'#]|\'[^'#]|\'\'[^'#])*\'*\'\'\'           ;
