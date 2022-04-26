@@ -57,7 +57,7 @@ read                    TOKEN(RREAD);
 
 [a-zA-Z](_[a-zA-Z0-9]|[a-zA-Z0-9])*                 TOKENST(TID); 
 
-[0-9]+(\.[0-9]+)([e|E][-|+]?[1-9][0-9]*)?          TOKENST(TFLOAT);
+[0-9]+(\.[0-9]+)([e|E][-|+]?[1-9][0-9]*)?           TOKENST(TFLOAT);
 
 [0-9]+                                              TOKENST(TINTEGER);
 [ \t\n]                                             ;

@@ -97,13 +97,4 @@ void Kodea::idatzi() {
 int Kodea::lortuErref() const {
   return hurrengoAgindua();
 }
-/**********************/
-/* erazagupenakGehitu2 */
-/**********************/
 
-void Kodea::erazagupenakGehitu2(const string &parmota, const string &motaIzena, const IdLista &idIzenak) {
-  IdLista::const_iterator iter;
-  for (iter=idIzenak.begin(); iter!=idIzenak.end(); iter++) {
-    agGehitu(string(motaIzena + " " + parmota + *iter));
-  }
-}

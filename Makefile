@@ -24,6 +24,8 @@ parser: $(SOURCES) Kodea.h Lag.h
 proba:  parser probak/proba1.in probak/proba2.in
 	echo "probak/proba1.in"
 	./parser < probak/proba1.in
+	echo "probak/proba1.2.in"
+	./parser < probak/proba1.2.in
 	echo "probak/proba2.in"
 	./parser < probak/proba2.in
 	echo "probak/proba3.in"

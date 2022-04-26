@@ -134,7 +134,7 @@ argumentuak : TLPAREN par_zerrenda TRPAREN
 			|
       ;
 
-par_zerrenda : id_zerrenda TCOLON par_mota mota {kodea.erazagupenakGehitu2(*$<mota>3,*$<mota>4,*$<idList>1);} par_zerrendaren_bestea
+par_zerrenda : id_zerrenda TCOLON par_mota mota {kodea.parametroakGehitu(*$<idList>1,*$<mota>3,*$<mota>4);} par_zerrendaren_bestea
       ;
 
 par_mota : TAMPERSAND
@@ -145,7 +145,7 @@ par_mota : TAMPERSAND
             *$<mota>$ = "val_";}
       ;
 
-par_zerrendaren_bestea : TSEMIC id_zerrenda TCOLON par_mota mota {kodea.erazagupenakGehitu2(*$<mota>4,*$<mota>5,*$<idList>2);} par_zerrendaren_bestea 
+par_zerrendaren_bestea : TSEMIC id_zerrenda TCOLON par_mota mota {kodea.parametroakGehitu(*$<idList>2,*$<mota>4,*$<mota>5);} par_zerrendaren_bestea 
 			|
       ;
 
@@ -174,8 +174,8 @@ sententzia : aldagaia TASSIG adierazpena TSEMIC
                         $<ec>$ = new contexit_struct;
                         $<ec>$->cont = $<ec>4->cont;}
 			| M RWHILE adierazpena TCOLON M bloke N RELSE TCOLON M bloke M
-                        {kodea.agOsatu($<adi>2->trueL,$<erref>5);
-                        kodea.agOsatu($<adi>2->falseL,$<erref>10);
+                        {kodea.agOsatu($<adi>3->trueL,$<erref>5);
+                        kodea.agOsatu($<adi>3->falseL,$<erref>10);
                         kodea.agOsatu(*$<next>7,$<erref>1);
                         kodea.agOsatu($<ec>6->exit,$<erref>10);
                         kodea.agOsatu($<ec>11->exit,$<erref>12);
@@ -201,8 +201,7 @@ sententzia : aldagaia TASSIG adierazpena TSEMIC
       ;
 
 aldagaia : TID 
-      {$<izena>$ = $<izena>1;
-      delete $<izena>1;}
+      {$<izena>$ = $<izena>1;}
       ;
 
 adierazpena : adierazpena TSUM adierazpena
@@ -210,25 +209,25 @@ adierazpena : adierazpena TSUM adierazpena
                         $<adi>$->izena = kodea.idBerria();
                         kodea.agGehitu($<adi>$->izena + " := " + $<adi>1->izena + " + " + $<adi>3->izena);
                         delete $<adi>1;
-                        delete $<adi>2;}
+                        delete $<adi>3;}
 			| adierazpena TRES adierazpena
                         {$<adi>$ = new expr_struct;
                         $<adi>$->izena = kodea.idBerria();
                         kodea.agGehitu($<adi>$->izena + " := " + $<adi>1->izena + " - " + $<adi>3->izena);
                         delete $<adi>1;
-                        delete $<adi>2;}
+                        delete $<adi>3;}
 			| adierazpena TMUL adierazpena
                         {$<adi>$ = new expr_struct;
                         $<adi>$->izena = kodea.idBerria();
                         kodea.agGehitu($<adi>$->izena + " := " + $<adi>1->izena + " * " + $<adi>3->izena);
                         delete $<adi>1;
-                        delete $<adi>2;}
+                        delete $<adi>3;}
                         | adierazpena TDIV adierazpena
                         {$<adi>$ = new expr_struct;
                         $<adi>$->izena = kodea.idBerria();
                         kodea.agGehitu($<adi>$->izena + " := " + $<adi>1->izena + " / " + $<adi>3->izena);
                         delete $<adi>1;
-                        delete $<adi>2;}
+                        delete $<adi>3;}
 			| adierazpena TEQL adierazpena
                         {$<adi>$ = new expr_struct;
                         $<adi>$->trueL.push_back(kodea.lortuErref());
