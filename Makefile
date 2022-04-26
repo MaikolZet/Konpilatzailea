@@ -31,11 +31,11 @@ proba:  parser probak/proba1.in probak/proba2.in
 	echo "probak/proba3.in"
 	./parser < probak/proba3.in
 	echo "probak/probaBERRIA_1_.in"
-	./parser < probak/probaBERRIA_1_.in"
+	./parser < probak/probaBERRIA_1_.in
 	echo "probak/probaBERRIA_2_.in"
-	./parser < probak/probaBERRIA_2_.in"
+	./parser < probak/probaBERRIA_2_.in
 	echo "probak/probaBERRIATXARRA.in"
-	./parser < probak/probaBERRIATXARRA.in"
+	./parser < probak/probaBERRIATXARRA.in
 	echo "probak/probatxar1.in"
 	./parser < probak/probatxar1.in
 

@@ -5,21 +5,21 @@ let	K_nota, BIB_nota, PK_nota, AA_nota, AD_nota, kount: integer;
   #Ez dakit zihur funtzionatuko duen
   	
   read(K_nota);
-  kount= kount +1;
+  kount = kount + 1;
   
   read(BIB_nota);
-  kount= kount +1;
+  kount = kount + 1;
   
   read(PK_nota);
-  kount= kount +1;
+  kount = kount + 1;
   
   read(AA_nota);
-  kount= kount +1;
+  kount = kount + 1;
   
   read(AD_nota);
-  kount= kount +1;
+  kount = kount + 1;
   
-  mikel_nota = (K_nota + BIB_nota + AA_nota + AD_nota + PK_nota)/kount;
+  mikel_nota = (K_nota + BIB_nota + AA_nota + AD_nota + PK_nota) / kount;
   
   print(mikel_nota);
   

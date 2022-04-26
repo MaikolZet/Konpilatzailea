@@ -1,9 +1,8 @@
 def main():
-let a, b : float in
+let a: float in
 
 {
 
    a = 0.4756 ;
-   b = a + 0.5;
 
 }

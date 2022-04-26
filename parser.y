@@ -104,7 +104,8 @@ eraz : eraz TSEMIC id_zerrenda TCOLON mota
       ;
 
 id_zerrenda : TID id_zerrendaren_bestea 
-                  {$<idList>$ = $<idList>2;}
+                  {$<idList>$ = $<idList>2;
+                  $<idList>$->push_back(*$<izena>1);}
       ;
 
 id_zerrendaren_bestea : TCOMMA TID id_zerrendaren_bestea 
