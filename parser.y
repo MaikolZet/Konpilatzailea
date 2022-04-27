@@ -172,7 +172,7 @@ sententzia : aldagaia TASSIG adierazpena TSEMIC
                         $<ec>$ = $<ec>5;}
 			|M RFOREVER TCOLON bloke M
                         {kodea.agGehitu("goto " + to_string($<erref>1));
-                        kodea.agOsatu($<ec>4->exit,$<erref>5);
+                        kodea.agOsatu($<ec>4->exit,$<erref>5+1);
                         $<ec>$ = new contexit_struct;
                         $<ec>$->cont = $<ec>4->cont;}
 			| M RWHILE adierazpena TCOLON M bloke N RELSE TCOLON M bloke M
