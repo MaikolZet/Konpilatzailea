@@ -82,11 +82,12 @@ programa : RDEF RMAIN TLPAREN TRPAREN TCOLON
       {kodea.agGehitu("programa");} 
 
 bloke_nag
+        {kodea.agGehitu("halt");
+            kodea.idatzi();}
          ;
 
 bloke_nag : bl_eraz TLBRACE azpiprogramen_eraz sententzia_zerrenda TRBRACE
-            {kodea.agGehitu("halt");
-            kodea.idatzi();}
+            
             ;
 
 bloke : bl_eraz TLBRACE sententzia_zerrenda TRBRACE
