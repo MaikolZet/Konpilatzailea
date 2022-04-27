@@ -106,12 +106,12 @@ eraz : eraz TSEMIC id_zerrenda TCOLON mota
 
 id_zerrenda : TID id_zerrendaren_bestea 
                   {$<idList>$ = $<idList>2;
-                  $<idList>$->push_back(*$<izena>1);}
+                  $<idList>$->push_front(*$<izena>1);}
       ;
 
 id_zerrendaren_bestea : TCOMMA TID id_zerrendaren_bestea 
                         {$<idList>$ = $<idList>3;
-                        $<idList>$->push_back(*$<izena>2);
+                        $<idList>$->push_front(*$<izena>2);
                         delete $<izena>2;}
 			|
                         {$<idList>$ = new IdLista;}
