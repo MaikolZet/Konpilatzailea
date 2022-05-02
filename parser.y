@@ -79,7 +79,7 @@
 %%
 
 programa : RDEF RMAIN TLPAREN TRPAREN TCOLON 
-      {kodea.agGehitu("programa");} 
+      {kodea.agGehitu("proc main");} 
 
 bloke_nag
         {kodea.agGehitu("halt");
@@ -119,10 +119,10 @@ id_zerrendaren_bestea : TCOMMA TID id_zerrendaren_bestea
 
 mota : RINT 
             {$<mota>$ = new std::string;
-            *$<mota>$ = "integer";}
+            *$<mota>$ = "int";}
       | RFLOAT
             {$<mota>$ = new std::string;
-            *$<mota>$ = "float";}
+            *$<mota>$ = "real";}
       ;
 
 azpiprogramen_eraz : azpiprogramaren_eraz azpiprogramen_eraz
@@ -233,7 +233,7 @@ adierazpena : adierazpena TSUM adierazpena
 			| adierazpena TEQL adierazpena
                         {$<adi>$ = new expr_struct;
                         $<adi>$->trueL.push_back(kodea.lortuErref());
-                        kodea.agGehitu("if " + $<adi>1->izena + " == " + $<adi>3->izena + " goto");
+                        kodea.agGehitu("if " + $<adi>1->izena + " = " + $<adi>3->izena + " goto");
                         $<adi>$->falseL.push_back(kodea.lortuErref());
                         kodea.agGehitu("goto");
                         delete $<adi>1;
@@ -273,7 +273,7 @@ adierazpena : adierazpena TSUM adierazpena
 			| adierazpena TNEQL adierazpena
                         {$<adi>$ = new expr_struct;
                         $<adi>$->trueL.push_back(kodea.lortuErref());
-                        kodea.agGehitu("if " + $<adi>1->izena + " /= " + $<adi>3->izena + " goto");
+                        kodea.agGehitu("if " + $<adi>1->izena + " != " + $<adi>3->izena + " goto");
                         $<adi>$->falseL.push_back(kodea.lortuErref());
                         kodea.agGehitu("goto");
                         delete $<adi>1;

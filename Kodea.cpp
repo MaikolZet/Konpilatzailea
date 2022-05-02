@@ -61,7 +61,7 @@ void Kodea::erazagupenakGehitu(const string &motaIzena, const IdLista &idIzenak)
 void Kodea::parametroakGehitu(const IdLista &idIzenak, const string &pMota, const string &motaIzena){ 
   IdLista::const_iterator iter;
   for (iter=idIzenak.begin(); iter!=idIzenak.end(); iter++) {
-    agGehitu(pMota + " " + motaIzena + " " + *iter);
+    agGehitu(pMota + motaIzena + " " + *iter);
   }
   
 
