@@ -18,8 +18,12 @@
    #include "Kodea.h"
    #include "Lag.h"
 
-
    Kodea kodea;
+
+   void errorea (const char *msg) {
+     kodea.erroreaGehitu("ERROREA, Lerroa " + to_string(yylineno) + ": " + msg);
+     yyerrornum++;
+   }
 %}
 
 /*******************************************************************************/
@@ -163,12 +167,19 @@ sententzia_zerrenda : sententzia sententzia_zerrenda
 
 sententzia : aldagaia TASSIG adierazpena TSEMIC
                         {$<ec>$ = new contexit_struct;
+                        if ($<adi>3->trueL.size() != 0){
+                                errorea("Adierazpen ez boolear bat espero zen.");
+                        }
                         kodea.agGehitu(*$<izena>1 + " := " + $<adi>3->izena);
                         delete $<adi>3;
                         delete $<izena>1;}
 			| RIF adierazpena TCOLON M bloke M
-                        {kodea.agOsatu($<adi>2->trueL,$<erref>4);
-                        kodea.agOsatu($<adi>2->falseL,$<erref>6);
+                        {if($<adi>2->trueL.size() == 0){
+                                errorea("Adierazpen boolear bat espero zen.");
+                        }else{
+                                kodea.agOsatu($<adi>2->trueL,$<erref>4);
+                                kodea.agOsatu($<adi>2->falseL,$<erref>6);
+                        }
                         $<ec>$ = $<ec>5;}
 			|M RFOREVER TCOLON bloke M
                         {kodea.agGehitu("goto " + to_string($<erref>1));
@@ -176,8 +187,12 @@ sententzia : aldagaia TASSIG adierazpena TSEMIC
                         $<ec>$ = new contexit_struct;
                         $<ec>$->cont = $<ec>4->cont;}
 			| M RWHILE adierazpena TCOLON M bloke N RELSE TCOLON M bloke M
-                        {kodea.agOsatu($<adi>3->trueL,$<erref>5);
-                        kodea.agOsatu($<adi>3->falseL,$<erref>10);
+                        {if($<adi>2->trueL.size() == 0){
+                                errorea("Adierazpen boolear bat espero zen.");
+                        }else{
+                                kodea.agOsatu($<adi>3->trueL,$<erref>5);
+                                kodea.agOsatu($<adi>3->falseL,$<erref>10);
+                        }
                         kodea.agOsatu(*$<next>7,$<erref>1);
                         kodea.agOsatu($<ec>6->exit,$<erref>10);
                         kodea.agOsatu($<ec>11->exit,$<erref>12);
@@ -197,7 +212,7 @@ sententzia : aldagaia TASSIG adierazpena TSEMIC
                         {kodea.agGehitu("read " + *$<izena>3);
                         $<ec>$ = new contexit_struct;}
 			| RPRINT TLPAREN adierazpena TRPAREN TSEMIC
-                        {kodea.agGehitu("write " + *$<izena>3);
+                        {kodea.agGehitu("write " + $<adi>3->izena);
                         kodea.agGehitu("writeln");
                         $<ec>$ = new contexit_struct;}
       ;

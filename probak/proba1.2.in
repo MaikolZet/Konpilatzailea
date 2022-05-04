@@ -3,12 +3,12 @@ let	a, b, c, x, y, emaitza, lag, bueltak: integer;
   	d, e: float in {
 	''' hau iruzkin lerroanitza da '''
 	lag = y; emaitza = x;
-	if emaitza < 1000: {
+	if emaitza + 1000: {
 		bueltak = 0;
 		while lag == 0: {
 			emaitza = emaitza + 1;
 			break if emaitza > 100000;
-			lag = lag - 1;
+			lag = lag > 1;
 			bueltak = bueltak + 1;
 		} else: {
 			if emaitza < 0 : { continue; }

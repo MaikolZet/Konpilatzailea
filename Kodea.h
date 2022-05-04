@@ -28,6 +28,9 @@ private:
 	/* Hurrengo aginduaren zenbakia itzultzen du, fitxategian idaztean agindu bakoitzak bere zenbakia izateko. */
 	int hurrengoAgindua() const;
 
+	/* Erroreak jasotzen dituen bektorea */
+	std::vector<std::string> erroreak;
+
 public:
 
 	/*****************************/
@@ -60,6 +63,8 @@ public:
 	/* Hurrengo aginduaren zenbakia itzultzen du. */
 	int lortuErref() const;
 
+	/*Errore bat gehitzeko agindua*/
+	void erroreaGehitu(const std::string &errorea);
 };
 
 #endif /* KODEA_H_ */

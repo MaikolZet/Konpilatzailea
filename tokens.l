@@ -15,6 +15,7 @@
 
 extern "C" int yywrap() { return(1) ; }
 extern int yyerror(const char *);
+extern int yylineno;
 
 %}
 
@@ -60,7 +61,8 @@ read                    TOKEN(RREAD);
 [0-9]+(\.[0-9]+)([e|E][-|+]?[1-9][0-9]*)?           TOKENST(TFLOAT);
 
 [0-9]+                                              TOKENST(TINTEGER);
-[ \t\n]                                             ;
+[ \t]                                               ;
+\n                                                  yylineno++;
 
 \'\'\'([^'#]|\'[^'#]|\'\'[^'#])*\'*\'\'\'           ;
 \#[^#\n]*\n                                         ; 
