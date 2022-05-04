@@ -75,7 +75,7 @@ for                     TOKEN(RFOR);
                                                         yylineno+=i;
                                                     }
                                 
-\#[^#\n]*\n                                         ; 
+\#[^#\n]*\n                                         {yylineno++;}
 
 .                       {yyerror("Token ezezaguna");}
 %%
