@@ -1,4 +1,11 @@
-@authors: Mikel Zubilaga.
+@author: Mikel Zubilaga.
 
-Atributu lexikoak ez dute ongi funtzionatzen, ez dakit zergatik.
+TODO: 
+* Tokensetik alperriko eskapeak kendu
+* Sinbolo taula gehitu (Nerearen erantzunaren zai)
+* Inplementazioa txostenarekin konparatu eta txostena aldatu ongi gera dadin
+AURREKOAK BUKATZEAN:
+* Kontrol-egitura berria egin (for)
+* Adierazpen boolearrak sartu
+* Prozedura-deiak sartu
 
