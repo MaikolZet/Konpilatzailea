@@ -34,6 +34,7 @@ integer                 TOKEN(RINT);
 float                   TOKEN(RFLOAT);
 print                   TOKEN(RPRINT);
 read                    TOKEN(RREAD);
+for                     TOKEN(RFOR);
 
 \*                      TOKEN(TMUL);
 =                       TOKEN(TASSIG);
@@ -62,9 +63,18 @@ read                    TOKEN(RREAD);
 
 [0-9]+                                              TOKENST(TINTEGER);
 [ \t]                                               ;
-\n                                                  yylineno++;
+\n                                                  {yylineno++;}
 
-\'\'\'([^'#]|\'[^'#]|\'\'[^'#])*\'*\'\'\'           ;
+\'\'\'([^'#]|\'[^'#]|\'\'[^'#])*\'*\'\'\'           {char* str = yytext;
+                                                     int i = 0;
+                                                     char *pch=strchr(str,'\n');
+                                                     while (pch!=NULL) {
+                                                            i++;
+                                                            pch=strchr(pch+1,'\n');
+                                                     }
+                                                        yylineno+=i;
+                                                    }
+                                
 \#[^#\n]*\n                                         ; 
 
 .                       {yyerror("Token ezezaguna");}

@@ -38,5 +38,7 @@ proba:  parser probak/proba1.in probak/proba2.in
 	./parser < probak/probaBERRIATXARRA.in
 	echo "probak/probatxar1.in"
 	./parser < probak/probatxar1.in
+	echo "probak/probaFor.in"
+	./parser < probak/probaFor.in
 
 	

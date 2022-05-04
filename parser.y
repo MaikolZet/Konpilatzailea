@@ -49,7 +49,7 @@
 
 /* ATRIBUTU GABEKOAK */
 
-%token RDEF RMAIN RLET RIN
+%token RDEF RMAIN RLET RIN RFOR
 %token TCOLON
 %token TLBRACE TRBRACE TSEMIC TMUL TASSIG TSUM TBIG TBIGQ TLOW TLOWQ
 %token TLPAREN TRPAREN TCOMMA TAMPERSAND
@@ -215,6 +215,33 @@ sententzia : aldagaia TASSIG adierazpena TSEMIC
                         {kodea.agGehitu("write " + $<adi>3->izena);
                         kodea.agGehitu("writeln");
                         $<ec>$ = new contexit_struct;}
+                        | RFOR TLPAREN aldagaia TASSIG adierazpena TSEMIC
+                        {if ($<adi>5->trueL.size() != 0){
+                                errorea("1. Adierazpenean adierazpen ez boolear bat espero zen.");
+                        }
+                        kodea.agGehitu(*$<izena>3 + " := " + $<adi>5->izena);
+                        delete $<adi>5;
+                        delete $<izena>3;} 
+                        M adierazpena TSEMIC M aldagaia TASSIG adierazpena
+                        {if($<adi>9->trueL.size() == 0){
+                                 errorea("2. Adierazpenean adierazpen boolear bat espero zen");
+                        }else if ($<adi>14->trueL.size() != 0){
+                                errorea("3. Adierazpenean adierazpen ez boolear bat espero zen.");
+                        }
+                        kodea.agGehitu(*$<izena>12 + " := " + $<adi>14->izena);
+                        delete $<adi>14;
+                        delete $<izena>12;}
+                        N TRPAREN TCOLON M bloke M
+                        {$<ec>$ = new contexit_struct;
+                         if($<adi>9->trueL.size() != 0){
+                                 kodea.agOsatu($<adi>9->trueL, $<erref>19);
+                                 kodea.agOsatu($<adi>9->falseL, $<erref>21 + 1);
+                                 kodea.agOsatu(*$<next>16, $<erref>8);
+                                 kodea.agGehitu("goto " + to_string($<erref>11));
+                                 /* Continue eta break if tratatu */
+
+                         }
+                        }
       ;
 
 aldagaia : TID 
