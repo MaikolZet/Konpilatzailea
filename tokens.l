@@ -66,13 +66,11 @@ for                     TOKEN(RFOR);
 \n                                                  {yylineno++;}
 
 \'\'\'([^'#]|\'[^'#]|\'\'[^'#])*\'*\'\'\'           {char* str = yytext;
-                                                     int i = 0;
                                                      char *pch=strchr(str,'\n');
                                                      while (pch!=NULL) {
-                                                            i++;
+                                                            yylineno++;
                                                             pch=strchr(pch+1,'\n');
                                                      }
-                                                        yylineno+=i;
                                                     }
                                 
 \#[^#\n]*\n                                         {yylineno++;}

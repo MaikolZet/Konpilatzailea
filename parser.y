@@ -207,7 +207,7 @@ sententzia : aldagaia TASSIG adierazpena TSEMIC
 			| RCONTINUE TSEMIC
                         {$<ec>$ = new contexit_struct;
                         $<ec>$->cont.push_back(kodea.lortuErref());
-                        kodea.agGehitu("goto ");}
+                        kodea.agGehitu("goto");}
 			| RREAD TLPAREN aldagaia TRPAREN TSEMIC
                         {kodea.agGehitu("read " + *$<izena>3);
                         $<ec>$ = new contexit_struct;}
@@ -238,8 +238,8 @@ sententzia : aldagaia TASSIG adierazpena TSEMIC
                                  kodea.agOsatu($<adi>9->falseL, $<erref>21 + 1);
                                  kodea.agOsatu(*$<next>16, $<erref>8);
                                  kodea.agGehitu("goto " + to_string($<erref>11));
-                                 /* Continue eta break if tratatu */
-
+                                 kodea.agOsatu($<ec>20->exit, $<erref>21 + 1);
+                                 kodea.agOsatu($<ec>20->cont, $<erref>11);
                          }
                         }
       ;

@@ -11,6 +11,11 @@ let	a, b, c: integer;
 			for(lag = y; lag == 0; lag = lag - 1): {
 				emaitza = emaitza + 1;
 				bueltak = bueltak + 1;
+				break if emaitza == 10;
+				if bueltak == 25: {
+					continue;
+				}
+				print(d);
 			} # for-aren bukaera
 			print(bueltak);
 			print(emaitza);
@@ -19,7 +24,7 @@ let	a, b, c: integer;
 	} # def batu -let amaiera
   read(a); 
   read(b);
-  d = 1<b;
+  d = 1+b;
   ''' batu(a,b,c); ' '' prozeduren deiak tratatzen dituzten praktiketan soilik '''
   c = c*(c*d)+e;
   print(c);
