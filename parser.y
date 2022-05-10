@@ -54,7 +54,7 @@
 /* ATRIBUTU GABEKOAK */
 
 %token RDEF RMAIN RLET RIN RFOR
-%token TCOLON
+%token TCOLON RAND ROR RNOT
 %token TLBRACE TRBRACE TSEMIC TMUL TASSIG TSUM TBIG TBIGQ TLOW TLOWQ
 %token TLPAREN TRPAREN TCOMMA TAMPERSAND
 %token TRES THASH TDIV TNEQL TEQL 
@@ -77,7 +77,7 @@
 
 
 
-
+%left RNOT RAND ROR
 %nonassoc TBIG TBIGQ TLOW TLOWQ TNEQL TEQL
 %left TSUM TRES
 %left TMUL TDIV
@@ -337,6 +337,38 @@ adierazpena : adierazpena TSUM adierazpena
                         delete $<izena>1;}
 			| TLPAREN adierazpena TRPAREN
                         {$<adi>$ = $<adi>2;}
+                        | adierazpena RAND M adierazpena
+                        {if($<adi>1->trueL.size() == 0){
+                                errorea("adierazpen boolear bat espero zen OR-eko lehenengo adierazpenean");
+                        }else if($<adi>4->trueL.size() == 0){
+                                errorea("adierazpen boolear bat espero zen OR-eko bigarren adierazpenean");
+                        }else{
+                                kodea.agOsatu($<adi>1->trueL,$<erref>3);
+                                $<adi>$ = new expr_struct;
+                                $<adi>$->falseL.splice($<adi>$->falseL.end(),$<adi>1->falseL);
+                                $<adi>$->falseL.splice($<adi>$->falseL.end(),$<adi>4->falseL);
+                                $<adi>$->trueL = $<adi>4->trueL;}
+                        }
+                        | adierazpena ROR M adierazpena
+                        {if($<adi>1->trueL.size() == 0){
+                                errorea("adierazpen boolear bat espero zen AND-eko lehenengo adierazpenean");
+                        }else if($<adi>4->trueL.size() == 0){
+                                errorea("adierazpen boolear bat espero zen AND-eko bigarren adierazpenean");
+                        }else{
+                                kodea.agOsatu($<adi>1->falseL,$<erref>3);
+                                $<adi>$ = new expr_struct;
+                                $<adi>$->trueL.splice($<adi>$->trueL.end(),$<adi>1->trueL);
+                                $<adi>$->trueL.splice($<adi>$->trueL.end(),$<adi>4->trueL);
+                                $<adi>$->falseL = $<adi>4->falseL;}
+                        }
+                        | RNOT adierazpena
+                        {if($<adi>2->trueL.size() == 0){
+                                errorea("adierazpen boolear bat espero zen NOT-ean");
+                        }else{
+                                $<adi>$ = new expr_struct;
+                                $<adi>$->trueL = $<adi>2->falseL;
+                                $<adi>$->falseL = $<adi>2->trueL;}
+                        }
       ;
 
 M : /*  produkzio hutsa */

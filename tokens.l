@@ -35,6 +35,9 @@ float                   TOKEN(RFLOAT);
 print                   TOKEN(RPRINT);
 read                    TOKEN(RREAD);
 for                     TOKEN(RFOR);
+and                     TOKEN(RAND);
+or                      TOKEN(ROR);
+not                     TOKEN(RNOT);
 
 \*                      TOKEN(TMUL);
 =                       TOKEN(TASSIG);

@@ -42,5 +42,7 @@ proba:  parser probak/proba1.in probak/proba2.in
 	./parser < probak/probaFor.in
 	echo "probak/probaForTxar.in"
 	./parser < probak/probaForTxar.in
+	echo "probak/probaBool.in"
+	./parser < probak/probaBool.in
 
 	
