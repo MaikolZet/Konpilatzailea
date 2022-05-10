@@ -16,7 +16,11 @@
    }
 
    #include "Kodea.h"
+   #include "SinboloTaula.h"
+   #include "SinboloTaulenPila.h"
    #include "Lag.h"
+
+  /* SinboloTaulenPila stPila; ERROREA EMATEN DU! */
 
    Kodea kodea;
 
