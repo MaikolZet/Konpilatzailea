@@ -112,6 +112,16 @@ void SinboloTaulenPila::gehituParametroa(string proz, string aldId, string parMo
 }
 
 
+/*********************/
+/* gehituParametroak */
+/*********************/
+
+void SinboloTaulenPila::gehituParametroak(string proz, IdLista &aldIdk, string parMota, string aldMota) {
+	pila.top().gainekoa->st.gehituParametroa(proz, parMota, aldMota);
+	pila.top().st.gehituAldagaiak(aldIdk, aldMota);
+}
+
+
 /***********************/
 /* egiaztatuArgKopurua */
 /***********************/

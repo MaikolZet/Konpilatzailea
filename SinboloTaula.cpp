@@ -25,6 +25,20 @@ void SinboloTaula::gehituAldagaia(string id, string mota) {
 
 
 /*******************/
+/* gehituAldagaiak */
+/*******************/
+
+void SinboloTaula::gehituAldagaiak(IdLista &idk, string mota) {
+  IdLista::const_iterator iter;
+  std::string izena;
+  for (iter = idk.begin(); iter != idk.end(); iter++)
+  {
+	izena = *iter;
+    gehituAldagaia(izena,mota);
+  }
+}
+
+/*******************/
 /* gehituProzedura */
 /*******************/
 

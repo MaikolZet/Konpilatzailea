@@ -60,6 +60,8 @@ public:
 	 */
 	void gehituParametroa(std::string proz, std::string aldId, std::string parMota, std::string aldMota);
 
+	void gehituParametroak(std::string proz, IdLista &aldIdk, std::string parMota, std::string aldMota);
+
 	/* id prozeduraren parametroZbki-garren argumentuaren parMota eta aldMota itzultzen ditu. */
 	std::pair<std::string, std::string> lortuParametroarenMotak(std::string id, int parametroZbki);
 

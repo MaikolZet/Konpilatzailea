@@ -16,11 +16,7 @@
    }
 
    #include "Kodea.h"
-   #include "SinboloTaula.h"
-   #include "SinboloTaulenPila.h"
    #include "Lag.h"
-
-  /* SinboloTaulenPila stPila; ERROREA EMATEN DU! */
 
    Kodea kodea;
 
@@ -28,6 +24,7 @@
      kodea.erroreaGehitu("ERROREA, Lerroa " + to_string(yylineno) + ": " + msg);
      yyerrornum++;
    }
+
 %}
 
 /*******************************************************************************/
@@ -137,14 +134,14 @@ azpiprogramen_eraz : azpiprogramaren_eraz azpiprogramen_eraz
 			|
       ;
 
-azpiprogramaren_eraz : RDEF TID {kodea.agGehitu("proc " + *$<izena>2);} argumentuak TCOLON bloke_nag {kodea.agGehitu("endproc " + *$<izena>2);}
+azpiprogramaren_eraz : RDEF TID {kodea.agGehitu("proc " + *$<izena>2); } argumentuak TCOLON bloke_nag {kodea.agGehitu("endproc " + *$<izena>2);}
       ;
 
 argumentuak : TLPAREN par_zerrenda TRPAREN
 			|
       ;
 
-par_zerrenda : id_zerrenda TCOLON par_mota mota {kodea.parametroakGehitu(*$<idList>1,*$<mota>3,*$<mota>4);} par_zerrendaren_bestea
+par_zerrenda : id_zerrenda TCOLON par_mota mota {kodea.parametroakGehitu(*$<idList>1,*$<mota>3,*$<mota>4); } par_zerrendaren_bestea
       ;
 
 par_mota : TAMPERSAND

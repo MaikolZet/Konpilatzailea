@@ -55,7 +55,7 @@ not                     TOKEN(RNOT);
 \}                      TOKEN(TRBRACE);
 \(                      TOKEN(TLPAREN);
 \)                      TOKEN(TRPAREN);
-\:                      TOKEN(TCOLON);
+:                      TOKEN(TCOLON);
 ,                       TOKEN(TCOMMA);
 &                       TOKEN(TAMPERSAND);
 
@@ -68,7 +68,7 @@ not                     TOKEN(RNOT);
 [ \t]                                               ;
 \n                                                  {yylineno++;}
 
-\'\'\'([^'#]|\'[^'#]|\'\'[^'#])*\'*\'\'\'           {char* str = yytext;
+'''([^'#]|'[^'#]|''[^'#])*'*'''           {char* str = yytext;
                                                      char *pch=strchr(str,'\n');
                                                      while (pch!=NULL) {
                                                             yylineno++;
@@ -76,7 +76,7 @@ not                     TOKEN(RNOT);
                                                      }
                                                     }
                                 
-\#[^#\n]*\n                                         {yylineno++;}
+#[^#\n]*\n                                         {yylineno++;}
 
 .                       {yyerror("Token ezezaguna");}
 %%

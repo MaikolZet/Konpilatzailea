@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include "Lag.h"
 
 /* Sinbolo-taula errepresentatuko duen datu-egitura. Honek bidea eman behar du konpilazioan zehar erazagutzen
  * diren sinbolo desberdinak (aldagaiak, prozedurak, ...) eta informazio gehigarria (motak, parametroak, ...) gorde
@@ -48,6 +49,9 @@ public:
 
 	/* Aldagai motako sinbolo bat eta bere mota (int edo float) gehitzen ditu. */
 	void gehituAldagaia(std::string id, std::string mota);
+
+	/* Aldagai motako sinbolo bat eta bere mota (int edo float) gehitzen ditu. */
+	void gehituAldagaiak(IdLista &idk, std::string mota);
 
 	/* Prozedura motako sinbolo bat (izena) gehitzen du. Informazio gehigarria beste metodoen bidez gehituko da. */
 	void gehituProzedura(std::string id);
