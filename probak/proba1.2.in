@@ -7,7 +7,8 @@ let	a, b, c, x, y, emaitza, lag, bueltak: integer;
 		bueltak = 0;
 		while lag == 0: {
 			emaitza = emaitza + 1;
-			break if emaitza > 100000;
+			break if emaitza > 100000 + 15 + 28 + 29;
+			break if emaitza + 100000;
 			lag = lag > 1;
 			bueltak = bueltak + 1;
 		} else: {

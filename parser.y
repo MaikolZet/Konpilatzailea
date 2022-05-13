@@ -174,36 +174,46 @@ sententzia : aldagaia TASSIG adierazpena TSEMIC
                         kodea.agGehitu(*$<izena>1 + " := " + $<adi>3->izena);
                         delete $<adi>3;
                         delete $<izena>1;}
-			| RIF adierazpena TCOLON M bloke M
+			| RIF adierazpena TCOLON 
                         {if($<adi>2->trueL.size() == 0){
                                 errorea("Adierazpen boolear bat espero zen.");
-                        }else{
-                                kodea.agOsatu($<adi>2->trueL,$<erref>4);
-                                kodea.agOsatu($<adi>2->falseL,$<erref>6);
+                        }}
+                        M bloke M
+                        {if($<adi>2->trueL.size() != 0){
+                                kodea.agOsatu($<adi>2->trueL,$<erref>5);
+                                kodea.agOsatu($<adi>2->falseL,$<erref>7);
                         }
-                        $<ec>$ = $<ec>5;}
+                        $<ec>$ = $<ec>6;}
 			|M RFOREVER TCOLON bloke M
                         {kodea.agGehitu("goto " + to_string($<erref>1));
                         kodea.agOsatu($<ec>4->exit,$<erref>5+1);
                         $<ec>$ = new contexit_struct;
                         $<ec>$->cont = $<ec>4->cont;}
-			| M RWHILE adierazpena TCOLON M bloke N RELSE TCOLON M bloke M
-                        {if($<adi>2->trueL.size() == 0){
+			| M RWHILE adierazpena TCOLON 
+                        {if($<adi>3->trueL.size() == 0){
+                                errorea("Adierazpen boolear bat espero zen.");
+                        }}
+                        M bloke N RELSE TCOLON M bloke M
+                        {
+                        if($<adi>3->trueL.size() != 0){
+                                kodea.agOsatu($<adi>3->trueL,$<erref>6);
+                                kodea.agOsatu($<adi>3->falseL,$<erref>11);
+                        }
+                        kodea.agOsatu(*$<next>8,$<erref>1);
+                        kodea.agOsatu($<ec>7->exit,$<erref>11);
+                        kodea.agOsatu($<ec>12->exit,$<erref>13);
+                        $<ec>$ = new contexit_struct;
+                        kodea.agOsatu($<ec>7->cont,$<erref>1);
+                        kodea.agOsatu($<ec>12->cont,$<erref>1);}
+			| RBREAK RIF adierazpena M TSEMIC
+                        {
+                        $<ec>$ = new contexit_struct;
+                        if($<adi>3->trueL.size() == 0){
                                 errorea("Adierazpen boolear bat espero zen.");
                         }else{
-                                kodea.agOsatu($<adi>3->trueL,$<erref>5);
-                                kodea.agOsatu($<adi>3->falseL,$<erref>10);
+                                kodea.agOsatu($<adi>3->falseL,$<erref>4);
+                                $<ec>$->exit = $<adi>3->trueL;
                         }
-                        kodea.agOsatu(*$<next>7,$<erref>1);
-                        kodea.agOsatu($<ec>6->exit,$<erref>10);
-                        kodea.agOsatu($<ec>11->exit,$<erref>12);
-                        $<ec>$ = new contexit_struct;
-                        kodea.agOsatu($<ec>6->cont,$<erref>1);
-                        kodea.agOsatu($<ec>11->cont,$<erref>1);}
-			| RBREAK RIF adierazpena M TSEMIC
-                        {kodea.agOsatu($<adi>3->falseL,$<erref>4);
-                        $<ec>$ = new contexit_struct;
-                        $<ec>$->exit = $<adi>3->trueL;
                         }
 			| RCONTINUE TSEMIC
                         {$<ec>$ = new contexit_struct;
