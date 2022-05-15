@@ -1,3 +1,6 @@
+# Oker dagoen programa baten egiaztapena burutzeko
+
+
 def main(): 
 let	a, b, c: integer;
   	d, e, r: float in {

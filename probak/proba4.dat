@@ -1,3 +1,6 @@
+# Adierazpen boolearrak frogatzeko
+
+
 def main(): 
 let	a, b, c: integer;
   	d, e: float in {

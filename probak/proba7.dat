@@ -1,3 +1,6 @@
+#Murriztapen Semantikoen froga.
+
+
 def main(): 
 let	a, b, c, x, y, emaitza, lag, bueltak: integer;
   	d, e: float in {
@@ -5,10 +8,13 @@ let	a, b, c, x, y, emaitza, lag, bueltak: integer;
 	lag = y; emaitza = x;
 	if emaitza + 1000: {
 		bueltak = 0;
-		while lag == 0: {
+		while lag + 0: {
 			emaitza = emaitza + 1;
 			break if emaitza > 100000 + 15 + 28 + 29;
 			break if emaitza + 100000;
+			break if emaitza + 15 or emaitza < 5;
+			break if emaitza < 15 and emaitza + 5;
+			break if not emaitza + 99;
 			lag = lag > 1;
 			bueltak = bueltak + 1;
 		} else: {

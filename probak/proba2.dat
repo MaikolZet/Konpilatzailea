@@ -1,3 +1,6 @@
+# Enuntziatuan proposatutako programa. Inplementazioa ondo burutu dela froatzeko
+
+
 def main(): 
 let	a, b, c: integer;
   	d, e: float in {

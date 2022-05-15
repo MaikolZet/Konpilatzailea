@@ -1,8 +1,8 @@
+#lehen froga, programa oso simple baten funtzionamendua frogatzeko
+
+
 def main():
-let a: float in
-
-{
-
+let a: float in {
    a = 0.4756 ;
-
+   c = c*(c*d)+e*0.5e-8;
 }
