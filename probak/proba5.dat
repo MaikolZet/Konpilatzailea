@@ -1,0 +1,31 @@
+def main(): 
+let	a, b, c: integer;
+  	d, e: float in {
+	''' hau iruzkin 
+    lerroanitza da '''
+	def batu(x: integer; y : integer; emaitza: & integer):
+	let lag, bueltak: integer in {
+		lag = y; emaitza = x;
+		if emaitza < 1000: {
+			bueltak = 0;
+			for(lag = y; lag == 0; lag = lag - 1): {
+				emaitza = emaitza + 1;
+				bueltak = bueltak + 1;
+				break if emaitza == 10;
+				if bueltak == 25: {
+					continue;
+				}
+				print(d);
+			} # for-aren bukaera
+			print(bueltak);
+			print(emaitza);
+		} # if amaiera
+		print(bueltak);
+	} # def batu -let amaiera
+  read(a); 
+  read(b);
+  d = 1+b;
+  ''' batu(a,b,c); ' '' prozeduren deiak tratatzen dituzten praktiketan soilik '''
+  c = c*(c*d)+e;
+  print(c);
+}

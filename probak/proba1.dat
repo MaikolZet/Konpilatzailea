@@ -1,0 +1,8 @@
+def main():
+let a: float in
+
+{
+
+   a = 0.4756 ;
+
+}
