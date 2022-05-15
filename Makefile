@@ -1,7 +1,7 @@
 CFLAGS=-Wall
 CPPFLAGS=
 CC= g++
-SOURCES=parser.cpp main.cpp tokens.cpp Kodea.cpp SinboloTaula.cpp SinboloTaulenPila.cpp
+SOURCES=parser.cpp main.cpp tokens.cpp Kodea.cpp
 
 all: parser proba
 
@@ -18,7 +18,7 @@ parser.hpp: parser.cpp
 tokens.cpp: tokens.l parser.hpp
 	flex -o $@ $<
 
-parser: $(SOURCES) Kodea.h Lag.h SinboloTaula.h SinboloTaulenPila.h
+parser: $(SOURCES) Kodea.h Lag.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $(SOURCES)
 
 proba:  parser probak/proba1.dat probak/proba2.dat
