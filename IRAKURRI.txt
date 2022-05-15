@@ -1,0 +1,4 @@
+@authors: Mikel Zubillaga, Iker Sancho
+
+Praktika make eginda egikaritzen da, eta honekin froga kasu guztiak exekutatzen dira. 
+1,2,4 eta 5 ondo bukatu behar dira eta 3,6 eta 7 aldiz gaizki.
