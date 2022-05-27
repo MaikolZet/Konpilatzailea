@@ -35,10 +35,10 @@
 %union {
     string *izena ;
     expr_struct *adi ;  /* Bertan izena trueL eta falseL */
-    IdLista *idList ;
+    IdLista *izenak ;
     int erref ;
     ErrefLista *next;
-    contbreak_struct *ec;
+    contbreak_struct *bc; /* Bertan cont eta breakL */
     string *mota;
 }
 
@@ -62,11 +62,11 @@
 /* SINTETIZATUAK */
 
 %type <erref> M
-%type <idList> id_zerrendaren_bestea id_zerrenda
+%type <izenak> id_zerrendaren_bestea id_zerrenda
 %type <mota> mota par_mota
 %type <adi> adierazpena
 %type <next> N 
-%type <ec> bloke sententzia sententzia_zerrenda
+%type <bc> bloke sententzia sententzia_zerrenda
 %type <izena> aldagaia
 
 
@@ -96,7 +96,7 @@ bloke_nag : bl_eraz TLBRACE azpiprogramen_eraz sententzia_zerrenda TRBRACE
             ;
 
 bloke : bl_eraz TLBRACE sententzia_zerrenda TRBRACE
-            {$<ec>$ = $<ec>3;}
+            {$<bc>$ = $<bc>3;}
         ;
 
 bl_eraz : RLET eraz RIN
@@ -104,22 +104,22 @@ bl_eraz : RLET eraz RIN
       ;
 
 eraz : eraz TSEMIC id_zerrenda TCOLON mota
-                        { kodea.erazagupenakGehitu(*$<mota>5,*$<idList>3);}
+                        { kodea.erazagupenakGehitu(*$<mota>5,*$<izenak>3);}
 			| id_zerrenda TCOLON mota
-                        { kodea.erazagupenakGehitu(*$<mota>3,*$<idList>1);}
+                        { kodea.erazagupenakGehitu(*$<mota>3,*$<izenak>1);}
       ;
 
 id_zerrenda : TID id_zerrendaren_bestea 
-                  {$<idList>$ = $<idList>2;
-                  $<idList>$->push_front(*$<izena>1);}
+                  {$<izenak>$ = $<izenak>2;
+                  $<izenak>$->push_front(*$<izena>1);}
       ;
 
 id_zerrendaren_bestea : TCOMMA TID id_zerrendaren_bestea 
-                        {$<idList>$ = $<idList>3;
-                        $<idList>$->push_front(*$<izena>2);
+                        {$<izenak>$ = $<izenak>3;
+                        $<izenak>$->push_front(*$<izena>2);
                         delete $<izena>2;}
 			|
-                        {$<idList>$ = new IdLista;}
+                        {$<izenak>$ = new IdLista;}
       ;
 
 mota : RINT 
@@ -141,7 +141,7 @@ argumentuak : TLPAREN par_zerrenda TRPAREN
 			|
       ;
 
-par_zerrenda : id_zerrenda TCOLON par_mota mota {kodea.parametroakGehitu(*$<idList>1,*$<mota>3,*$<mota>4); } par_zerrendaren_bestea
+par_zerrenda : id_zerrenda TCOLON par_mota mota {kodea.parametroakGehitu(*$<izenak>1,*$<mota>3,*$<mota>4); } par_zerrendaren_bestea
       ;
 
 par_mota : TAMPERSAND
@@ -152,22 +152,22 @@ par_mota : TAMPERSAND
             *$<mota>$ = "val_";}
       ;
 
-par_zerrendaren_bestea : TSEMIC id_zerrenda TCOLON par_mota mota {kodea.parametroakGehitu(*$<idList>2,*$<mota>4,*$<mota>5);} par_zerrendaren_bestea 
+par_zerrendaren_bestea : TSEMIC id_zerrenda TCOLON par_mota mota {kodea.parametroakGehitu(*$<izenak>2,*$<mota>4,*$<mota>5);} par_zerrendaren_bestea 
 			|
       ;
 
 sententzia_zerrenda : sententzia sententzia_zerrenda 
-                        {$<ec>$ = new contbreak_struct;
-                        $<ec>$->breakL.splice($<ec>$->breakL.end(), $<ec>1->breakL);
-                        $<ec>$->breakL.splice($<ec>$->breakL.end(), $<ec>2->breakL);
-                        $<ec>$->cont.splice($<ec>$->cont.end(), $<ec>1->cont);
-                        $<ec>$->cont.splice($<ec>$->cont.end(), $<ec>2->cont);}
+                        {$<bc>$ = new contbreak_struct;
+                        $<bc>$->breakL.splice($<bc>$->breakL.end(), $<bc>1->breakL);
+                        $<bc>$->breakL.splice($<bc>$->breakL.end(), $<bc>2->breakL);
+                        $<bc>$->cont.splice($<bc>$->cont.end(), $<bc>1->cont);
+                        $<bc>$->cont.splice($<bc>$->cont.end(), $<bc>2->cont);}
 			| 
-                        {$<ec>$ = new contbreak_struct;}
+                        {$<bc>$ = new contbreak_struct;}
       ;
 
 sententzia : aldagaia TASSIG adierazpena TSEMIC
-                        {$<ec>$ = new contbreak_struct;
+                        {$<bc>$ = new contbreak_struct;
                         if ($<adi>3->trueL.size() != 0){
                                 errorea("Adierazpen ez boolear bat espero zen.");
                         }
@@ -183,49 +183,49 @@ sententzia : aldagaia TASSIG adierazpena TSEMIC
                                 kodea.agOsatu($<adi>2->trueL,$<erref>5);
                                 kodea.agOsatu($<adi>2->falseL,$<erref>7);
                         }
-                        $<ec>$ = $<ec>6;}
+                        $<bc>$ = $<bc>6;}
 			|M RFOREVER TCOLON bloke M
                         {kodea.agGehitu("goto " + to_string($<erref>1));
-                        kodea.agOsatu($<ec>4->breakL,$<erref>5+1);
-                        $<ec>$ = new contbreak_struct;
-                        $<ec>$->cont = $<ec>4->cont;}
+                        kodea.agOsatu($<bc>4->breakL,$<erref>5+1);
+                        $<bc>$ = new contbreak_struct;
+                        $<bc>$->cont = $<bc>4->cont;}
 			| M RWHILE adierazpena TCOLON 
                         {if($<adi>3->trueL.size() == 0){
                                 errorea("Adierazpen boolear bat espero zen.");
                         }}
-                        M bloke N RELSE TCOLON M bloke M
+                        M bloke N RELSE TCOLON M bloke
                         {
                         if($<adi>3->trueL.size() != 0){
                                 kodea.agOsatu($<adi>3->trueL,$<erref>6);
                                 kodea.agOsatu($<adi>3->falseL,$<erref>11);
                         }
                         kodea.agOsatu(*$<next>8,$<erref>1);
-                        kodea.agOsatu($<ec>7->breakL,$<erref>11);
-                        kodea.agOsatu($<ec>12->breakL,$<erref>13);
-                        $<ec>$ = new contbreak_struct;
-                        kodea.agOsatu($<ec>7->cont,$<erref>1);
-                        kodea.agOsatu($<ec>12->cont,$<erref>1);}
+                        $<bc>$ = new contbreak_struct;
+                        kodea.agOsatu($<bc>7->breakL,$<erref>11);
+                        $<bc>$->breakL = $<bc>12->breakL;
+                        kodea.agOsatu($<bc>7->cont,$<erref>1);
+                        kodea.agOsatu($<bc>12->cont,$<erref>1);}
 			| RBREAK RIF adierazpena M TSEMIC
                         {
-                        $<ec>$ = new contbreak_struct;
+                        $<bc>$ = new contbreak_struct;
                         if($<adi>3->trueL.size() == 0){
                                 errorea("Adierazpen boolear bat espero zen.");
                         }else{
                                 kodea.agOsatu($<adi>3->falseL,$<erref>4);
-                                $<ec>$->breakL = $<adi>3->trueL;
+                                $<bc>$->breakL = $<adi>3->trueL;
                         }
                         }
 			| RCONTINUE TSEMIC
-                        {$<ec>$ = new contbreak_struct;
-                        $<ec>$->cont.push_back(kodea.lortuErref());
+                        {$<bc>$ = new contbreak_struct;
+                        $<bc>$->cont.push_back(kodea.lortuErref());
                         kodea.agGehitu("goto");}
 			| RREAD TLPAREN aldagaia TRPAREN TSEMIC
                         {kodea.agGehitu("read " + *$<izena>3);
-                        $<ec>$ = new contbreak_struct;}
+                        $<bc>$ = new contbreak_struct;}
 			| RPRINT TLPAREN adierazpena TRPAREN TSEMIC
                         {kodea.agGehitu("write " + $<adi>3->izena);
                         kodea.agGehitu("writeln");
-                        $<ec>$ = new contbreak_struct;}
+                        $<bc>$ = new contbreak_struct;}
                         | RFOR TLPAREN aldagaia TASSIG adierazpena TSEMIC
                         {if ($<adi>5->trueL.size() != 0){
                                 errorea("1. Adierazpenean adierazpen ez boolear bat espero zen.");
@@ -243,14 +243,14 @@ sententzia : aldagaia TASSIG adierazpena TSEMIC
                         delete $<adi>14;
                         delete $<izena>12;}
                         N TRPAREN TCOLON M bloke M
-                        {$<ec>$ = new contbreak_struct;
+                        {$<bc>$ = new contbreak_struct;
                          if($<adi>9->trueL.size() != 0){
                                  kodea.agOsatu($<adi>9->trueL, $<erref>19);
                                  kodea.agOsatu($<adi>9->falseL, $<erref>21 + 1);
                                  kodea.agOsatu(*$<next>16, $<erref>8);
                                  kodea.agGehitu("goto " + to_string($<erref>11));
-                                 kodea.agOsatu($<ec>20->breakL, $<erref>21 + 1);
-                                 kodea.agOsatu($<ec>20->cont, $<erref>11);
+                                 kodea.agOsatu($<bc>20->breakL, $<erref>21 + 1);
+                                 kodea.agOsatu($<bc>20->cont, $<erref>11);
                          }
                         }
       ;
