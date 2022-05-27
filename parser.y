@@ -38,7 +38,7 @@
     IdLista *idList ;
     int erref ;
     ErrefLista *next;
-    contexit_struct *ec;
+    contbreak_struct *ec;
     string *mota;
 }
 
@@ -157,17 +157,17 @@ par_zerrendaren_bestea : TSEMIC id_zerrenda TCOLON par_mota mota {kodea.parametr
       ;
 
 sententzia_zerrenda : sententzia sententzia_zerrenda 
-                        {$<ec>$ = new contexit_struct;
-                        $<ec>$->exit.splice($<ec>$->exit.end(), $<ec>1->exit);
-                        $<ec>$->exit.splice($<ec>$->exit.end(), $<ec>2->exit);
+                        {$<ec>$ = new contbreak_struct;
+                        $<ec>$->breakL.splice($<ec>$->breakL.end(), $<ec>1->breakL);
+                        $<ec>$->breakL.splice($<ec>$->breakL.end(), $<ec>2->breakL);
                         $<ec>$->cont.splice($<ec>$->cont.end(), $<ec>1->cont);
                         $<ec>$->cont.splice($<ec>$->cont.end(), $<ec>2->cont);}
 			| 
-                        {$<ec>$ = new contexit_struct;}
+                        {$<ec>$ = new contbreak_struct;}
       ;
 
 sententzia : aldagaia TASSIG adierazpena TSEMIC
-                        {$<ec>$ = new contexit_struct;
+                        {$<ec>$ = new contbreak_struct;
                         if ($<adi>3->trueL.size() != 0){
                                 errorea("Adierazpen ez boolear bat espero zen.");
                         }
@@ -186,8 +186,8 @@ sententzia : aldagaia TASSIG adierazpena TSEMIC
                         $<ec>$ = $<ec>6;}
 			|M RFOREVER TCOLON bloke M
                         {kodea.agGehitu("goto " + to_string($<erref>1));
-                        kodea.agOsatu($<ec>4->exit,$<erref>5+1);
-                        $<ec>$ = new contexit_struct;
+                        kodea.agOsatu($<ec>4->breakL,$<erref>5+1);
+                        $<ec>$ = new contbreak_struct;
                         $<ec>$->cont = $<ec>4->cont;}
 			| M RWHILE adierazpena TCOLON 
                         {if($<adi>3->trueL.size() == 0){
@@ -200,32 +200,32 @@ sententzia : aldagaia TASSIG adierazpena TSEMIC
                                 kodea.agOsatu($<adi>3->falseL,$<erref>11);
                         }
                         kodea.agOsatu(*$<next>8,$<erref>1);
-                        kodea.agOsatu($<ec>7->exit,$<erref>11);
-                        kodea.agOsatu($<ec>12->exit,$<erref>13);
-                        $<ec>$ = new contexit_struct;
+                        kodea.agOsatu($<ec>7->breakL,$<erref>11);
+                        kodea.agOsatu($<ec>12->breakL,$<erref>13);
+                        $<ec>$ = new contbreak_struct;
                         kodea.agOsatu($<ec>7->cont,$<erref>1);
                         kodea.agOsatu($<ec>12->cont,$<erref>1);}
 			| RBREAK RIF adierazpena M TSEMIC
                         {
-                        $<ec>$ = new contexit_struct;
+                        $<ec>$ = new contbreak_struct;
                         if($<adi>3->trueL.size() == 0){
                                 errorea("Adierazpen boolear bat espero zen.");
                         }else{
                                 kodea.agOsatu($<adi>3->falseL,$<erref>4);
-                                $<ec>$->exit = $<adi>3->trueL;
+                                $<ec>$->breakL = $<adi>3->trueL;
                         }
                         }
 			| RCONTINUE TSEMIC
-                        {$<ec>$ = new contexit_struct;
+                        {$<ec>$ = new contbreak_struct;
                         $<ec>$->cont.push_back(kodea.lortuErref());
                         kodea.agGehitu("goto");}
 			| RREAD TLPAREN aldagaia TRPAREN TSEMIC
                         {kodea.agGehitu("read " + *$<izena>3);
-                        $<ec>$ = new contexit_struct;}
+                        $<ec>$ = new contbreak_struct;}
 			| RPRINT TLPAREN adierazpena TRPAREN TSEMIC
                         {kodea.agGehitu("write " + $<adi>3->izena);
                         kodea.agGehitu("writeln");
-                        $<ec>$ = new contexit_struct;}
+                        $<ec>$ = new contbreak_struct;}
                         | RFOR TLPAREN aldagaia TASSIG adierazpena TSEMIC
                         {if ($<adi>5->trueL.size() != 0){
                                 errorea("1. Adierazpenean adierazpen ez boolear bat espero zen.");
@@ -243,13 +243,13 @@ sententzia : aldagaia TASSIG adierazpena TSEMIC
                         delete $<adi>14;
                         delete $<izena>12;}
                         N TRPAREN TCOLON M bloke M
-                        {$<ec>$ = new contexit_struct;
+                        {$<ec>$ = new contbreak_struct;
                          if($<adi>9->trueL.size() != 0){
                                  kodea.agOsatu($<adi>9->trueL, $<erref>19);
                                  kodea.agOsatu($<adi>9->falseL, $<erref>21 + 1);
                                  kodea.agOsatu(*$<next>16, $<erref>8);
                                  kodea.agGehitu("goto " + to_string($<erref>11));
-                                 kodea.agOsatu($<ec>20->exit, $<erref>21 + 1);
+                                 kodea.agOsatu($<ec>20->breakL, $<erref>21 + 1);
                                  kodea.agOsatu($<ec>20->cont, $<erref>11);
                          }
                         }

@@ -15,8 +15,8 @@ struct expr_struct {
   ErrefLista falseL ; // false hitz erreserbatua c-z
 };
 
-struct contexit_struct {
-  ErrefLista exit;
+struct contbreak_struct {
+  ErrefLista breakL;
   ErrefLista cont;
 };
 
