@@ -60,15 +60,15 @@ not                     TOKEN(RNOT);
 &                       TOKEN(TAMPERSAND);
 
 
-[a-zA-Z](_[a-zA-Z0-9]|[a-zA-Z0-9])*                 TOKENST(TID); 
+[a-zA-Z](_?[a-zA-Z0-9])*                TOKENST(TID); 
 
-[0-9]+(\.[0-9]+)([e|E][-|+]?[1-9][0-9]*)?           TOKENST(TFLOAT);
+[0-9]+(\.[0-9]+)([eE][-+]?[1-9][0-9]*)?           TOKENST(TFLOAT);
 
 [0-9]+                                              TOKENST(TINTEGER);
 [ \t]                                               ;
 \n                                                  {yylineno++;}
 
-'''([^'#]|'[^'#]|''[^'#])*'*'''           {char* str = yytext;
+'''([^'#]|'[^'#]|''[^'#])*('|'')?'''           {char* str = yytext;
                                                      char *pch=strchr(str,'\n');
                                                      while (pch!=NULL) {
                                                             yylineno++;
